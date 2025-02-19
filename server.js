@@ -16,7 +16,7 @@ app.post('/api/upload-url', async (req, res) => {
     if (!title || !fileType || !userId) {
       return res.status(400).json({ error: 'Title, file type, and user ID are required' })
     }
-
+    console.log('Generating pre-signed URL for:', { title, fileType, userId })
     const presignedUrl = await generatePresignedUrl(title, fileType, userId)
 
     res.json({ presignedUrl })
@@ -25,7 +25,20 @@ app.post('/api/upload-url', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' })
   }
 })
-
+// server.js
+app.post('/api/upload-success', (req, res) => {
+    const { userId, title, bucket } = req.body
+  
+    if (!userId || !title || !bucket) {
+      return res.status(400).json({ error: 'Missing required fields' })
+    }
+  
+    console.log('Upload success notification received:', { userId, title, bucket })
+  
+    // TODO: Trigger Kafka event here
+    res.json({ message: 'Upload success notification received' })
+  })
+  
 app.listen(PORT, () => {
   console.log(`Upload service is running on port ${PORT}`)
 })
