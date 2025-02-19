@@ -1,5 +1,5 @@
 // kafkaProducer.js
-const { kafka } = require('./kafkaClient')
+const { kafka } = require('../config/kafkaClient')
 
 const producer = kafka.producer()
 

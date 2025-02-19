@@ -1,8 +1,8 @@
 const express = require('express')
 const cors = require('cors')
 require('dotenv').config()
-const generatePresignedUrl = require('./s3')
-const { sendKafkaEvent } = require('./kafkaProducer')
+const generatePresignedUrl = require('./controllers/generatePresignedUrl')
+const { sendKafkaEvent } = require('./kafka/kafkaProducer')
 const app = express()
 const PORT = process.env.PORT || 5000
 

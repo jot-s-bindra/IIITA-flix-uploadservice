@@ -1,5 +1,5 @@
 // kafkaConsumer.js
-const { kafka } = require('./kafkaClient')
+const { kafka } = require('../config/kafkaClient')
 const { sendKafkaEvent } = require('./kafkaProducer')
 
 async function startKafkaConsumer() {
