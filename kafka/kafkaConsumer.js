@@ -3,7 +3,7 @@ const { kafka } = require('../config/kafkaClient')
 const { sendKafkaEvent } = require('./kafkaProducer')
 const Video = require('../models/Video')
 const connectDB = require('../config/mongoConfig')
-connectDB() // ✅ Connects to MongoDB when Kafka Consumer starts
+connectDB() 
 
 async function startKafkaConsumer() {
   const consumer = kafka.consumer({ groupId: 'upload-service-group' })

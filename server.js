@@ -5,6 +5,8 @@ const generatePresignedUrl = require('./controllers/generatePresignedUrl')
 const { sendKafkaEvent } = require('./kafka/kafkaProducer')
 const app = express()
 const PORT = process.env.PORT || 5000
+const connectDB = require('./config/mongoConfig')
+connectDB() // ✅ Connects to MongoDB when server starts
 
 app.use(cors())
 app.use(express.json())
@@ -52,7 +54,6 @@ app.post('/api/upload-success', async (req, res) => {
         return res.status(500).json({ error: 'Error sending Kafka event' })
     }
 })
-
 app.listen(PORT, () => {
   console.log(`Upload service is running on port ${PORT}`)
 })
