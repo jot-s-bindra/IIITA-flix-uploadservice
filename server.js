@@ -1,4 +1,5 @@
 const express = require('express')
+const Video = require('./models/Video'); // ✅ Import Video model
 const cors = require('cors')
 require('dotenv').config()
 const generatePresignedUrl = require('./controllers/generatePresignedUrl')
@@ -8,9 +9,20 @@ const PORT = process.env.PORT || 5000
 const connectDB = require('./config/mongoConfig')
 connectDB() // ✅ Connects to MongoDB when server starts
 const startTranscoderStatusConsumer = require('./kafka/kafkaTranscoderConsumer'); // New consumer for transcoder status
-app.use(cors())
-app.use(express.json())
-
+app.use(cors({
+  origin: '*', // Or use your React app domain like: 'http://localhost:3000'
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));app.use(express.json())
+app.get('/api/videos', async (req, res) => {
+  try {
+      const videos = await Video.find({ status: 'done' }); // Get all videos with status "done"
+      res.json(videos); // Send videos as JSON
+  } catch (error) {
+      console.error('Error fetching videos:', error);
+      res.status(500).json({ error: 'Internal server error' });
+  }
+});
 app.post('/api/upload-url', async (req, res) => {
   try {
     const { title, fileType, userId } = req.body
